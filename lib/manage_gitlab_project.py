@@ -82,6 +82,7 @@ def createproject(pname):
   else:
     description=options.desc
   project_options={
+    'namespace_id': found_group.id,
     'issues_enabled': options.issues,
     'wall_enabled': options.wall,
     'merge_requests_enabled': options.merge,
@@ -93,9 +94,6 @@ def createproject(pname):
   for x in project_options.keys():
     project_options[x] = str(project_options[x]).lower()
   new_project=git.add_project(pname,description=description,**project_options)
-  if gitlab_user != gitlab_namespace:
-    new_project=findproject(gitlab_user,pname,user=True)
-    new_project=git.group(found_group.id).transfer_project(new_project.id)
   if findproject(gitlab_namespace,pname):
     return findproject(gitlab_namespace,pname)
   else:
